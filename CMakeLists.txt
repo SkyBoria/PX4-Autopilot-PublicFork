@@ -400,20 +400,6 @@ execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory ${ep_base}/Install/in
 include_directories(${ep_base}/Install/include)
 
 #=============================================================================
-# external modules
-#
-set(external_module_paths)
-if (NOT EXTERNAL_MODULES_LOCATION STREQUAL "")
-	message(STATUS "External modules: ${EXTERNAL_MODULES_LOCATION}")
-	add_subdirectory("${EXTERNAL_MODULES_LOCATION}/src" external_modules)
-
-	foreach(external_module ${config_module_list_external})
-		add_subdirectory(${EXTERNAL_MODULES_LOCATION}/src/${external_module} external_modules/${external_module})
-		list(APPEND external_module_paths ${EXTERNAL_MODULES_LOCATION}/src/${external_module})
-	endforeach()
-endif()
-
-#=============================================================================
 # subdirectories
 #
 add_library(parameters_interface INTERFACE)
@@ -426,6 +412,17 @@ add_subdirectory(src/lib EXCLUDE_FROM_ALL)
 
 add_subdirectory(platforms/${PX4_PLATFORM}/src/px4)
 add_subdirectory(platforms EXCLUDE_FROM_ALL)
+
+set(external_module_paths)
+if (NOT EXTERNAL_MODULES_LOCATION STREQUAL "")
+	message(STATUS "External modules: ${EXTERNAL_MODULES_LOCATION}")
+	add_subdirectory("${EXTERNAL_MODULES_LOCATION}/src" external_modules)
+
+	foreach(external_module ${config_module_list_external})
+		add_subdirectory(${EXTERNAL_MODULES_LOCATION}/src/${external_module} external_modules/${external_module})
+		list(APPEND external_module_paths ${EXTERNAL_MODULES_LOCATION}/src/${external_module})
+	endforeach()
+endif()
 
 if(EXISTS "${PX4_BOARD_DIR}/CMakeLists.txt")
 	add_subdirectory(${PX4_BOARD_DIR})
