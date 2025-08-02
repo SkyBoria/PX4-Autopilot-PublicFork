@@ -174,3 +174,6 @@ if(CONFIG_MODULES_UUV_ATT_CONTROL)
 		60002_uuv_bluerov2_heavy
 	)
 endif()
+
+# Add custom Skyboria airframe definitions
+add_subdirectory(skyboria)
