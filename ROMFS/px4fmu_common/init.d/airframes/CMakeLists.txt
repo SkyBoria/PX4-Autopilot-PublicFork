@@ -173,3 +173,6 @@ if(CONFIG_MODULES_SPACECRAFT)
 		70000_atmos
 	)
 endif()
+
+# Add custom Skyboria airframe definitions
+add_subdirectory(skyboria)

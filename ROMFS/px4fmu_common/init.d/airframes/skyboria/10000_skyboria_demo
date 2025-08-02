@@ -1,0 +1,122 @@
+#!/bin/sh
+#
+# @name Skyboria Demo Quadcopter
+#
+# @type Quadrotor x
+# @class Copter
+#
+# @maintainer SkyBoria
+#
+
+
+# -------------------------------------------
+# Default configuration
+# -------------------------------------------
+. ${R}etc/init.d/rc.mc_defaults
+
+# -------------------------------------------
+# Parameters - Autopilot Communications
+# -------------------------------------------
+# UXRCE-DSS Client (for uORB message monitoring)
+param set-default UXRCE_DDS_AG_IP 2130706433  # IP address must be provided in int32 format
+param set-default UXRCE_DDS_CFG 1000 # Serial port to run UXRCE-DSS Client (ETH = 1000)
+param set-default UXRCE_DDS_DOM_ID 0 # UXRCE-DSS domain
+param set-default UXRCE_DDS_KEY 1 # uXRCE-DDS key (>0). In a single agent - multi client configuration, each client must have a unique session key.
+param set-default UXRCE_DDS_PRT 8888 # If UXRCE_DDS_CFG = ETH, UDP port used
+
+# MAVLink (MAVLink instances a defined by MAV_X_CONFIG where X = 0, 1, 2)
+param set-default MAV_COMP_ID 1 # MAVLink component 
+param set-default MAV_0_CONFIG 101 # Port assigned to MAVLink Instance 0 (TELEM1 = 101)
+param set-default MAV_1_CONFIG 0 # Port assigned to MAVLink Instance 1 (Disabled = 0) 
+param set-default MAV_2_CONFIG 1000 # Port assigned to MAVLink Instance 1 (ETH = 0) 
+param set-default MAV_2_BROADCAST 1 # 1 = broadcast HEARTBEAT, 0 = Never broadcast, 2 = Only multicast
+param set-default MAV_2_MODE 2 # Set of streamed messages and their rates (0 = Normal, 2 = Onboard)
+param set-default MAV_2_RADIO_CTL 0 # Disable SW throttling of MAVLink traffic
+param set-default MAV_2_RATE 100000 # Maximum sending rate
+param set-default MAV_2_REMOTE_PRT 14550 # MAVLink remote port
+param set-default MAV_2_UDP_PRT 14550 # MAVLink network port (local port)
+
+# -------------------------------------------
+# Parameters - Airframe Geometry
+# -------------------------------------------
+# Number of rotors and positions (R0 in plane X)
+param set-default CA_ROTOR_COUNT 4
+param set-default CA_ROTOR0_PX 1 # [m] X-position in FRD coordinate frame relative to CoG
+param set-default CA_ROTOR0_PY 1 # [m] Y-position in FRD coordinate frame relative to CoG
+param set-default CA_ROTOR0_PZ 0.2 # [m] Z-position in FRD coordinate frame relative to CoG
+param set-default CA_ROTOR0_KM 0.05 # Moment coefficient (tau = KM*T). KM > 0 if CCW rotation
+param set-default CA_ROTOR1_PX -1
+param set-default CA_ROTOR1_PY -1
+param set-default CA_ROTOR1_PZ 0.2
+param set-default CA_ROTOR1_KM 0.05
+param set-default CA_ROTOR2_PX 1
+param set-default CA_ROTOR2_PY -1
+param set-default CA_ROTOR2_PZ 0.2
+param set-default CA_ROTOR2_KM -0.05
+param set-default CA_ROTOR3_PX -1
+param set-default CA_ROTOR3_PY 1
+param set-default CA_ROTOR3_PZ 0.2
+param set-default CA_ROTOR3_KM -0.05
+
+# -------------------------------------------
+# Parameters - Actuators
+# -------------------------------------------
+# ICE Throttle (PWM MAIN 1)
+param set-default PWM_MAIN_TIM0 50 # Output protocol (PWM rates) used for MAIN 1-2. Custom PWM rates can be used by setting any value > 0
+param set-default PWM_MAIN_TIM1 50 # Output protocol (PWM rates) used for MAIN 3-4
+param set-default PWM_MAIN_TIM2 50 # Output protocol (PWM rates) used for MAIN 5-8
+param set-default PWM_MAIN_DIS1 1000 # Value set when not armed
+param set-default PWM_MAIN_FAIL1 1000 # Value set when in failsafe mode
+param set-default PWM_MAIN_MIN1 1000 # PWM minimum value
+param set-default PWM_MAIN_MIN1 1800 # PWM maximum value
+param set-default PWM_MAIN_FUNC1 451 # Output function ID (451 = ICE Throttle)
+
+# ESC - Electrical Motors (DroneCAN)
+# Here DroneCAN-ESCs configuration
+
+# -------------------------------------------
+# Parameters - Engine Controller
+# -------------------------------------------
+# Engine Controller
+param set-default ENGC_DEADBAND 0.001
+param set-default ENGC_KP 0.001
+param set-default ENGC_KI 0.001
+param set-default ENGC_TH_ACT_CH 0
+param set-default ENGC_TH_LL 0
+param set-default ENGC_TH_UL 1
+param set-default ENGC_GB_RATIO 2.533
+param set-default ENGC_SCALE_OUT 1
+param set-default ENGC_T_MODE 0
+param set-default ENGC_T_DMD 800
+
+# -------------------------------------------
+# Parameters - Ground test settings
+# -------------------------------------------
+# Arming checks (disabled and enabled for Ground Testing)
+param set-default COM_DISARM_PRFLT -1 # Time-out for auto disarm if not taking off. If < 0, disabled.
+param set-default COM_ARM_CHK_ESCS 0 # Check ESCs report telemetry (0 = Disabled)
+param set-default COM_ARM_BAT_MIN 0 # Minimum battery level for arming (0 = Disabled)
+param set-default COM_ARM_WO_GPS 0 # Enable arming without GPS (0 = Disabled)
+param set-default COM_ARM_MIS_REQ 0 # Require valid mission to arm (0 = Disabled)
+param set-default COM_ARM_SDCARD 1 # Require SD card to arm (0 = Disabled). Needed for logging
+param set-default COM_ARM_AUTH_REQ 0 # Requires arm authorization from an external (MAVLink) system (0 = Disabled)
+param set-default COM_ARM_ODID 0 # Require healthy Remote ID system to arm (0 = Disabled)
+param set-default COM_ARM_MAG_STR 2 # Check if the estimator detects a strong magnetic disturbance (0 = Disabled, 1 = Deny, 2 = Warning)
+param set-default COM_ARM_MAG_ANG -1 # Maximum magnetic field inconsistency between units to allow arming. If < 0, disabled.
+param set-default COM_ARM_IMU_GYR -1 # Maximum rate gyro inconsistency between IMU units to allow arming. If < 0, disabled.
+param set-default COM_ARM_IMU_ACC -1 # Maximum accelerometer inconsistency between IMU units to allow arming. If < 0, disabled.
+param set-default COM_CPU_MAX 95 # [%] Maximum allowed CPU load to allow arming. If < 0, disabled
+
+# -------------------------------------------
+# Modules
+# -------------------------------------------
+# PX4-Generic ICE control module 
+internal_combustion_engine_control stop # Force stopping PX4 generic module
+
+# Skyboria ICE control module
+if [![param compare -s PWM_MAIN_FUNC1 451]]
+then
+    control_allocator stop
+fi
+engine_controller start # Start SkyBoria ICE controller
+
