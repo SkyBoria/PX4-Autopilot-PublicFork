@@ -119,6 +119,10 @@
 # include <uORB/topics/debug_vect.h>
 #endif // !CONSTRAINED_FLASH
 
+// Skyboria messages
+#include <uORB/topics/ecan_inverter_state.h>
+#include <uORB/topics/battery_system_state.h>
+
 using namespace time_literals;
 
 class Mavlink;
@@ -216,6 +220,14 @@ private:
 	void handle_message_named_value_float(mavlink_message_t *msg);
 #endif // !CONSTRAINED_FLASH
 	void handle_message_request_event(mavlink_message_t *msg);
+
+	// Skyboria message handlers
+	void handle_message_battery_system_state(mavlink_message_t *msg);
+	void handle_message_ecan_inverter_state_current_actual(mavlink_message_t *msg);
+	void handle_message_ecan_inverter_state_current_200pc(mavlink_message_t *msg);
+	void handle_message_ecan_inverter_state_current_device(mavlink_message_t *msg);
+	void handle_message_ecan_inverter_state_speed_actual(mavlink_message_t *msg);
+	void handle_message_ecan_inverter_state_speed_rpmmax(mavlink_message_t *msg);
 
 	void CheckHeartbeats(const hrt_abstime &t, bool force = false);
 
@@ -333,6 +345,15 @@ private:
 	uORB::Publication<debug_value_s>			_debug_value_pub{ORB_ID(debug_value)};
 	uORB::Publication<debug_vect_s>				_debug_vect_pub{ORB_ID(debug_vect)};
 #endif // !CONSTRAINED_FLASH
+
+	// uORB Publications of SkyBoria messages
+	uORB::Publication<battery_system_state_s> _battery_system_state_pub{ORB_ID(battery_system_state)};
+	uORB::Publication<ecan_inverter_state_s> _ecan_inverter_state_current_actual_pub{ORB_ID(ecan_inverter_state_current_actual)};
+	uORB::Publication<ecan_inverter_state_s> _ecan_inverter_state_current_200pc_pub{ORB_ID(ecan_inverter_state_current_200pc)};
+	uORB::Publication<ecan_inverter_state_s> _ecan_inverter_state_current_device_pub{ORB_ID(ecan_inverter_state_current_device)};
+	uORB::Publication<ecan_inverter_state_s> _ecan_inverter_state_speed_actual_pub{ORB_ID(ecan_inverter_state_speed_actual)};
+	uORB::Publication<ecan_inverter_state_s> _ecan_inverter_state_speed_rpmmax_pub{ORB_ID(ecan_inverter_state_speed_rpmmax)};
+
 
 	// ORB publications (multi)
 	uORB::PublicationMulti<distance_sensor_s>		_distance_sensor_pub{ORB_ID(distance_sensor)};

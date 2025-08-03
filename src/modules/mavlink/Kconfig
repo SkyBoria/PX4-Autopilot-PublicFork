@@ -24,3 +24,10 @@ menuconfig USER_MAVLINK
 	depends on BOARD_PROTECTED && MODULES_MAVLINK
 	---help---
 		Put mavlink in userspace memory
+
+menuconfig EXTERNAL_MAVLINK_DIALECT
+depends on MODULES_MAVLINK
+        bool "External Mavlink dialect"
+        default n
+	---help---
+		"If enabled, mavlink dialect is searched in directory ${EXTERNAL_MODULES_LOCATION}/mavlink-dialects"
