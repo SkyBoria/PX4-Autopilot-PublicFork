@@ -56,39 +56,45 @@ add_custom_command(
 add_custom_target(mavlink_c_generate_uavionix DEPENDS ${MAVLINK_LIBRARY_DIR}/${MAVLINK_DIALECT_UAVIONIX}/${MAVLINK_DIALECT_UAVIONIX}.h)
 set_source_files_properties(${MAVLINK_LIBRARY_DIR}/${MAVLINK_DIALECT_UAVIONIX}/${MAVLINK_DIALECT_UAVIONIX}.h PROPERTIES GENERATED true)
 
-# --- INICIO DEL CÓDIGO AD-HOC SKYBORIA ---
-# Generate SkyBoria custom dialect
-set(MAVLINK_DIALECT_SKYBORIA "common_skyboria") # Define el nombre de tu dialecto
-add_custom_command(
-	OUTPUT ${MAVLINK_LIBRARY_DIR}/${MAVLINK_DIALECT_SKYBORIA}/${MAVLINK_DIALECT_SKYBORIA}.h
-	COMMAND
-		${PYTHON_EXECUTABLE} ${MAVLINK_GIT_DIR}/pymavlink/tools/mavgen.py
-			--lang C --wire-protocol 2.0
-			--output ${MAVLINK_LIBRARY_DIR}
-			${MAVLINK_GIT_DIR}/message_definitions/v1.0/${MAVLINK_DIALECT_SKYBORIA}.xml > ${CMAKE_CURRENT_BINARY_DIR}/mavgen_${MAVLINK_DIALECT_SKYBORIA}.log
-	DEPENDS
-		git_mavlink_v2
-		${MAVLINK_GIT_DIR}/pymavlink/tools/mavgen.py
-		${MAVLINK_GIT_DIR}/message_definitions/v1.0/${MAVLINK_DIALECT_SKYBORIA}.xml
+# # --- INICIO DEL CÓDIGO AD-HOC SKYBORIA ---
+# # Generate SkyBoria custom dialect
+# set(SKYBORIA_MAVLINK_DIALECT_DIR ${EXTERNAL_MODULES_LOCATION}/mavlink-dialects) # Define el nombre de tu dialecto
+# set(MAVLINK_DIALECT_SKYBORIA "common_skyboria") # Define el nombre de tu dialecto
+# add_custom_command(
+# 	OUTPUT ${MAVLINK_LIBRARY_DIR}/${MAVLINK_DIALECT_SKYBORIA}/${MAVLINK_DIALECT_SKYBORIA}.h
+# 	COMMAND
+# 		${PYTHON_EXECUTABLE} ${MAVLINK_GIT_DIR}/pymavlink/tools/mavgen.py
+# 			--lang C --wire-protocol 2.0
+# 			--output ${MAVLINK_LIBRARY_DIR}
+# 			${SKYBORIA_MAVLINK_DIALECT_DIR}/${MAVLINK_DIALECT_SKYBORIA}.xml > ${CMAKE_CURRENT_BINARY_DIR}/mavgen_${MAVLINK_DIALECT_SKYBORIA}.log
+# 	DEPENDS
+# 		git_mavlink_v2
+# 		${MAVLINK_GIT_DIR}/pymavlink/tools/mavgen.py
+# 		${SKYBORIA_MAVLINK_DIALECT_DIR}/${MAVLINK_DIALECT_SKYBORIA}.xml
 
-	COMMENT "Generating Mavlink ${MAVLINK_DIALECT_SKYBORIA}: ${MAVLINK_GIT_DIR_RELATIVE}/message_definitions/v1.0/${MAVLINK_DIALECT_SKYBORIA}.xml"
-)
-add_custom_target(mavlink_c_generate_skyboria DEPENDS ${MAVLINK_LIBRARY_DIR}/${MAVLINK_DIALECT_SKYBORIA}/${MAVLINK_DIALECT_SKYBORIA}.h)
-set_source_files_properties(${MAVLINK_LIBRARY_DIR}/${MAVLINK_DIALECT_SKYBORIA}/${MAVLINK_DIALECT_SKYBORIA}.h PROPERTIES GENERATED true)
-# --- FIN DEL CÓDIGO AD-HOC SKYBORIA ---
+# 	COMMENT "Generating Mavlink ${MAVLINK_DIALECT_SKYBORIA}: ${SKYBORIA_MAVLINK_DIALECT_DIR}/${MAVLINK_DIALECT_SKYBORIA}.xml"
+# )
+# add_custom_target(mavlink_c_generate_skyboria DEPENDS ${MAVLINK_LIBRARY_DIR}/${MAVLINK_DIALECT_SKYBORIA}/${MAVLINK_DIALECT_SKYBORIA}.h)
+# set_source_files_properties(${MAVLINK_LIBRARY_DIR}/${MAVLINK_DIALECT_SKYBORIA}/${MAVLINK_DIALECT_SKYBORIA}.h PROPERTIES GENERATED true)
+# # --- FIN DEL CÓDIGO AD-HOC SKYBORIA ---
 
 # generate the primary dialect
+if(${CONFIG_EXTERNAL_MAVLINK_DIALECT})
+	set(MAVLINK_DIALECT_DIR ${EXTERNAL_MODULES_LOCATION}/mavlink-dialects)
+else()
+	set(MAVLINK_DIALECT_DIR ${MAVLINK_GIT_DIR}/message_definitions/v1.0)
+endif()
 add_custom_command(
 	OUTPUT ${MAVLINK_LIBRARY_DIR}/${CONFIG_MAVLINK_DIALECT}/${CONFIG_MAVLINK_DIALECT}.h
 	COMMAND
 		${PYTHON_EXECUTABLE} ${MAVLINK_GIT_DIR}/pymavlink/tools/mavgen.py
 			--lang C --wire-protocol 2.0
 			--output ${MAVLINK_LIBRARY_DIR}
-			${MAVLINK_GIT_DIR}/message_definitions/v1.0/${CONFIG_MAVLINK_DIALECT}.xml > ${CMAKE_CURRENT_BINARY_DIR}/mavgen_${CONFIG_MAVLINK_DIALECT}.log
+			${MAVLINK_DIALECT_DIR}/${CONFIG_MAVLINK_DIALECT}.xml > ${CMAKE_CURRENT_BINARY_DIR}/mavgen_${CONFIG_MAVLINK_DIALECT}.log
 	DEPENDS
 		git_mavlink_v2
 		${MAVLINK_GIT_DIR}/pymavlink/tools/mavgen.py
-		${MAVLINK_GIT_DIR}/message_definitions/v1.0/${CONFIG_MAVLINK_DIALECT}.xml
+		${MAVLINK_DIALECT_DIR}/${CONFIG_MAVLINK_DIALECT}.xml
 		${BOARD_DEFCONFIG}
 
 		# generate after uAvionix

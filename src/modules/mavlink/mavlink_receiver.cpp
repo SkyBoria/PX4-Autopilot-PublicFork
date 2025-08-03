@@ -324,6 +324,31 @@ MavlinkReceiver::handle_message(mavlink_message_t *msg)
 		handle_message_gimbal_device_attitude_status(msg);
 		break;
 
+// Skyboria messages
+	case MAVLINK_MSG_ID_ECAN_INVERTER_STATE_CURRENT_ACTUAL:
+		handle_message_ecan_inverter_state_current_actual(msg);
+		break;
+
+	case MAVLINK_MSG_ID_ECAN_INVERTER_STATE_CURRENT_200PC:
+		handle_message_ecan_inverter_state_current_200pc(msg);
+		break;
+
+	case MAVLINK_MSG_ID_ECAN_INVERTER_STATE_CURRENT_DEVICE:
+		handle_message_ecan_inverter_state_current_device(msg);
+		break;
+
+	case MAVLINK_MSG_ID_ECAN_INVERTER_STATE_SPEED_ACTUAL:
+		handle_message_ecan_inverter_state_speed_actual(msg);
+		break;
+
+	case MAVLINK_MSG_ID_ECAN_INVERTER_STATE_SPEED_RPMMAX:
+		handle_message_ecan_inverter_state_speed_rpmmax(msg);
+		break;
+
+	case MAVLINK_MSG_ID_BATTERY_SYSTEM_STATE:
+		handle_message_battery_system_state(msg);
+		break;
+
 #if defined(MAVLINK_MSG_ID_SET_VELOCITY_LIMITS) // For now only defined if development.xml is used
 
 	case MAVLINK_MSG_ID_SET_VELOCITY_LIMITS:
@@ -3113,6 +3138,151 @@ void MavlinkReceiver::handle_message_open_drone_id_system(
 
 	_open_drone_id_system_pub.publish(odid_system);
 }
+
+// SkyBoria handler methods
+void MavlinkReceiver::handle_message_ecan_inverter_state_current_actual(
+	mavlink_message_t *msg)
+{
+	// Decode mavlink message
+	mavlink_ecan_inverter_state_current_actual_t mavlink_msg;
+	mavlink_msg_ecan_inverter_state_current_actual_decode(msg, &mavlink_msg);
+
+	// Assign received message to internal uORB message
+	ecan_inverter_state_s uorb_msg_s{};
+	uorb_msg_s.timestamp = hrt_absolute_time();
+	uorb_msg_s.target_system = mavlink_msg.target_system;
+	uorb_msg_s.target_component = mavlink_msg.target_component;
+	uorb_msg_s.packet_timestamp = mavlink_msg.timestamp;
+	uorb_msg_s.packet_number = mavlink_msg.packet_number;
+	uorb_msg_s.frame_info = mavlink_msg.frame_info;
+	uorb_msg_s.frame_id = mavlink_msg.frame_id;
+	uorb_msg_s.regid = mavlink_msg.regid;
+	uorb_msg_s.state = mavlink_msg.state;
+	uorb_msg_s.spare = mavlink_msg.spare;
+	uorb_msg_s.padding = mavlink_msg.padding;
+
+	_ecan_inverter_state_current_actual_pub.publish(uorb_msg_s);
+}
+
+void MavlinkReceiver::handle_message_ecan_inverter_state_current_200pc(
+	mavlink_message_t *msg)
+{
+	// Decode mavlink message
+	mavlink_ecan_inverter_state_current_200pc_t mavlink_msg;
+	mavlink_msg_ecan_inverter_state_current_200pc_decode(msg, &mavlink_msg);
+
+	// Assign received message to internal uORB message
+	ecan_inverter_state_s uorb_msg_s{};
+	uorb_msg_s.timestamp = hrt_absolute_time();
+	uorb_msg_s.target_system = mavlink_msg.target_system;
+	uorb_msg_s.target_component = mavlink_msg.target_component;
+	uorb_msg_s.packet_timestamp = mavlink_msg.timestamp;
+	uorb_msg_s.packet_number = mavlink_msg.packet_number;
+	uorb_msg_s.frame_info = mavlink_msg.frame_info;
+	uorb_msg_s.frame_id = mavlink_msg.frame_id;
+	uorb_msg_s.regid = mavlink_msg.regid;
+	uorb_msg_s.state = mavlink_msg.state;
+	uorb_msg_s.spare = mavlink_msg.spare;
+	uorb_msg_s.padding = mavlink_msg.padding;
+
+	_ecan_inverter_state_current_200pc_pub.publish(uorb_msg_s);
+}
+
+void MavlinkReceiver::handle_message_ecan_inverter_state_current_device(
+	mavlink_message_t *msg)
+{
+	// Decode mavlink message
+	mavlink_ecan_inverter_state_current_device_t mavlink_msg;
+	mavlink_msg_ecan_inverter_state_current_device_decode(msg, &mavlink_msg);
+
+	// Assign received message to internal uORB message
+	ecan_inverter_state_s uorb_msg_s{};
+	uorb_msg_s.timestamp = hrt_absolute_time();
+	uorb_msg_s.target_system = mavlink_msg.target_system;
+	uorb_msg_s.target_component = mavlink_msg.target_component;
+	uorb_msg_s.packet_timestamp = mavlink_msg.timestamp;
+	uorb_msg_s.packet_number = mavlink_msg.packet_number;
+	uorb_msg_s.frame_info = mavlink_msg.frame_info;
+	uorb_msg_s.frame_id = mavlink_msg.frame_id;
+	uorb_msg_s.regid = mavlink_msg.regid;
+	uorb_msg_s.state = mavlink_msg.state;
+	uorb_msg_s.spare = mavlink_msg.spare;
+	uorb_msg_s.padding = mavlink_msg.padding;
+
+	_ecan_inverter_state_current_device_pub.publish(uorb_msg_s);
+}
+
+void MavlinkReceiver::handle_message_ecan_inverter_state_speed_actual(
+	mavlink_message_t *msg)
+{
+	// Decode mavlink message
+	mavlink_ecan_inverter_state_speed_actual_t mavlink_msg;
+	mavlink_msg_ecan_inverter_state_speed_actual_decode(msg, &mavlink_msg);
+
+	// Assign received message to internal uORB message
+	ecan_inverter_state_s uorb_msg_s{};
+	uorb_msg_s.timestamp = hrt_absolute_time();
+	uorb_msg_s.target_system = mavlink_msg.target_system;
+	uorb_msg_s.target_component = mavlink_msg.target_component;
+	uorb_msg_s.packet_timestamp = mavlink_msg.timestamp;
+	uorb_msg_s.packet_number = mavlink_msg.packet_number;
+	uorb_msg_s.frame_info = mavlink_msg.frame_info;
+	uorb_msg_s.frame_id = mavlink_msg.frame_id;
+	uorb_msg_s.regid = mavlink_msg.regid;
+	uorb_msg_s.state = mavlink_msg.state;
+	uorb_msg_s.spare = mavlink_msg.spare;
+	uorb_msg_s.padding = mavlink_msg.padding;
+
+	_ecan_inverter_state_speed_actual_pub.publish(uorb_msg_s);
+}
+
+void MavlinkReceiver::handle_message_ecan_inverter_state_speed_rpmmax(
+	mavlink_message_t *msg)
+{
+	// Decode mavlink message
+	mavlink_ecan_inverter_state_speed_rpmmax_t mavlink_msg;
+	mavlink_msg_ecan_inverter_state_speed_rpmmax_decode(msg, &mavlink_msg);
+
+	// Assign received message to internal uORB message
+	ecan_inverter_state_s uorb_msg_s{};
+	uorb_msg_s.timestamp = hrt_absolute_time();
+	uorb_msg_s.target_system = mavlink_msg.target_system;
+	uorb_msg_s.target_component = mavlink_msg.target_component;
+	uorb_msg_s.packet_timestamp = mavlink_msg.timestamp;
+	uorb_msg_s.packet_number = mavlink_msg.packet_number;
+	uorb_msg_s.frame_info = mavlink_msg.frame_info;
+	uorb_msg_s.frame_id = mavlink_msg.frame_id;
+	uorb_msg_s.regid = mavlink_msg.regid;
+	uorb_msg_s.state = mavlink_msg.state;
+	uorb_msg_s.spare = mavlink_msg.spare;
+	uorb_msg_s.padding = mavlink_msg.padding;
+
+	_ecan_inverter_state_speed_rpmmax_pub.publish(uorb_msg_s);
+}
+
+void MavlinkReceiver::handle_message_battery_system_state(
+	mavlink_message_t *msg)
+{
+	// Decode mavlink message
+	mavlink_battery_system_state_t mavlink_msg;
+	mavlink_msg_battery_system_state_decode(msg, &mavlink_msg);
+
+	// Assign received message to internal uORB message
+	battery_system_state_s uorb_msg_s{};
+	uorb_msg_s.timestamp = hrt_absolute_time();
+	uorb_msg_s.target_system = mavlink_msg.target_system;
+	uorb_msg_s.target_component = mavlink_msg.target_component;
+	uorb_msg_s.packet_timestamp = mavlink_msg.timestamp;
+	uorb_msg_s.packet_number = mavlink_msg.packet_number;
+	uorb_msg_s.voltage = mavlink_msg.voltage;
+	uorb_msg_s.current = mavlink_msg.current;
+	uorb_msg_s.temperature = mavlink_msg.temperature;
+	uorb_msg_s.inverter_state = mavlink_msg.inverter_state;
+
+	_battery_system_state_pub.publish(uorb_msg_s);
+}
+
+// End of message handlers
 void
 MavlinkReceiver::run()
 {
