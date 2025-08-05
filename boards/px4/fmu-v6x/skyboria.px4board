@@ -14,6 +14,8 @@ CONFIG_MODULES_SIMULATION_SIMULATOR_SIH=n
 # ----------------------------------
 # SkyBoria configuration
 # ----------------------------------
+# PX4 ICE controller shall not be deployed
+internal_combustion_engine_control=n 
 CONFIG_MODULES_FREQUENCY_SWEEPER=y
 CONFIG_MODULES_ENGINE_CONTROLLER=y
 CONFIG_EXTERNAL_MAVLINK_DIALECT=y

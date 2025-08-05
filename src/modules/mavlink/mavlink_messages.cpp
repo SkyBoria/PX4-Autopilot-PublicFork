@@ -156,6 +156,11 @@
 
 // Skyboria messages
 #include "streams/skyboria/ECAN_INVERTER_REQUEST_CURRENT_ACTUAL.hpp"
+#include "streams/skyboria/ECAN_INVERTER_REQUEST_CURRENT_200PC.hpp"
+#include "streams/skyboria/ECAN_INVERTER_REQUEST_CURRENT_DEVICE.hpp"
+#include "streams/skyboria/ECAN_INVERTER_REQUEST_SPEED_ACTUAL.hpp"
+#include "streams/skyboria/ECAN_INVERTER_REQUEST_SPEED_RPMMAX.hpp"
+#include "streams/skyboria/ECAN_INVERTER_CMD_TORQUE.hpp"
 
 // ensure PX4 rotation enum and MAV_SENSOR_ROTATION align
 static_assert(MAV_SENSOR_ROTATION_NONE == static_cast<MAV_SENSOR_ORIENTATION>(ROTATION_NONE),
@@ -518,6 +523,21 @@ static const StreamListItem streams_list[] = {
 #if defined(ECAN_INVERTER_REQUEST_CURRENT_ACTUAL_HPP)
 	create_stream_list_item<MavlinkStreamEcanInverterRequestCurrentActual>(),
 #endif // ECAN_INVERTER_REQUEST_CURRENT_ACTUAL_HPP
+#if defined(ECAN_INVERTER_REQUEST_CURRENT_DEVICE_HPP)
+	create_stream_list_item<MavlinkStreamEcanInverterRequestCurrentDevice>(),
+#endif // ECAN_INVERTER_REQUEST_CURRENT_DEVICE_HPP
+#if defined(ECAN_INVERTER_REQUEST_CURRENT_200PC_HPP)
+	create_stream_list_item<MavlinkStreamEcanInverterRequestCurrent200Pc>(),
+#endif // ECAN_INVERTER_REQUEST_CURRENT_200PC_HPP
+#if defined(ECAN_INVERTER_REQUEST_SPEED_ACTUAL_HPP)
+	create_stream_list_item<MavlinkStreamEcanInverterRequestSpeedActual>(),
+#endif // ECAN_INVERTER_REQUEST_SPEED_ACTUAL_HPP
+#if defined(ECAN_INVERTER_REQUEST_SPEED_RPMMAX_HPP)
+	create_stream_list_item<MavlinkStreamEcanInverterRequestSpeedRpmMax>(),
+#endif // ECAN_INVERTER_REQUEST_SPEED_RPMMAX_HPP
+#if defined(ECAN_INVERTER_CMD_TORQUE_HPP)
+	create_stream_list_item<MavlinkStreamEcanInverterCmdTorque>(),
+#endif // ECAN_INVERTER_CMD_TORQUE_HPP
 
 };
 
