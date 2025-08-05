@@ -154,6 +154,9 @@
 # include "streams/UAVIONIX_ADSB_OUT_DYNAMIC.hpp"
 #endif // !CONSTRAINED_FLASH
 
+// Skyboria messages
+#include "streams/skyboria/ECAN_INVERTER_REQUEST_CURRENT_ACTUAL.hpp"
+
 // ensure PX4 rotation enum and MAV_SENSOR_ROTATION align
 static_assert(MAV_SENSOR_ROTATION_NONE == static_cast<MAV_SENSOR_ORIENTATION>(ROTATION_NONE),
 	      "Roll: 0, Pitch: 0, Yaw: 0");
@@ -510,6 +513,12 @@ static const StreamListItem streams_list[] = {
 #if defined(CURRENT_MODE_HPP)
 	create_stream_list_item<MavlinkStreamCurrentMode>(),
 #endif // CURRENT_MODE_HPP
+
+// Skyboria messages
+#if defined(ECAN_INVERTER_REQUEST_CURRENT_ACTUAL_HPP)
+	create_stream_list_item<MavlinkStreamEcanInverterRequestCurrentActual>(),
+#endif // ECAN_INVERTER_REQUEST_CURRENT_ACTUAL_HPP
+
 };
 
 const char *get_stream_name(const uint16_t msg_id)
