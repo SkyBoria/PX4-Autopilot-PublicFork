@@ -1416,6 +1416,14 @@ Mavlink::configure_streams_to_default(const char *configure_single_stream)
 
 	switch (_mode) {
 	case MAVLINK_MODE_NORMAL:
+		// Skyboria output mavlink messages
+		configure_stream_local("ECAN_INVERTER_REQUEST_CURRENT_ACTUAL", unlimited_rate);
+		configure_stream_local("ECAN_INVERTER_REQUEST_CURRENT_DEVICE", unlimited_rate);
+		configure_stream_local("ECAN_INVERTER_REQUEST_CURRENT_200PC", unlimited_rate);
+		configure_stream_local("ECAN_INVERTER_REQUEST_SPEED_ACTUAL", unlimited_rate);
+		configure_stream_local("ECAN_INVERTER_REQUEST_SPEED_RPMMAX", unlimited_rate);
+		configure_stream_local("ECAN_INVERTER_REQUEST_CMD_TORQUE", unlimited_rate);
+		//
 		configure_stream_local("ADSB_VEHICLE", unlimited_rate);
 		configure_stream_local("ALTITUDE", 1.0f);
 		configure_stream_local("ATTITUDE", 15.0f);
@@ -1479,6 +1487,13 @@ Mavlink::configure_streams_to_default(const char *configure_single_stream)
 		break;
 
 	case MAVLINK_MODE_ONBOARD:
+		// Skyboria output mavlink messages
+		configure_stream_local("ECAN_INVERTER_REQUEST_CURRENT_ACTUAL", unlimited_rate);
+		configure_stream_local("ECAN_INVERTER_REQUEST_CURRENT_DEVICE", unlimited_rate);
+		configure_stream_local("ECAN_INVERTER_REQUEST_CURRENT_200PC", unlimited_rate);
+		configure_stream_local("ECAN_INVERTER_REQUEST_SPEED_ACTUAL", unlimited_rate);
+		configure_stream_local("ECAN_INVERTER_REQUEST_SPEED_RPMMAX", unlimited_rate);
+		configure_stream_local("ECAN_INVERTER_REQUEST_CMD_TORQUE", unlimited_rate);
 		// Note: streams requiring low latency come first
 		configure_stream_local("TIMESYNC", 10.0f);
 		configure_stream_local("CAMERA_TRIGGER", unlimited_rate);
