@@ -75,6 +75,9 @@
 #include "streams/ESTIMATOR_STATUS.hpp"
 #include "streams/EXTENDED_SYS_STATE.hpp"
 #include "streams/FLIGHT_INFORMATION.hpp"
+#if defined(MAVLINK_MSG_ID_GLOBAL_POSITION)
+#include "streams/GLOBAL_POSITION.hpp"
+#endif //MAVLINK_MSG_ID_GLOBAL_POSITION
 #include "streams/GLOBAL_POSITION_INT.hpp"
 #include "streams/GPS_GLOBAL_ORIGIN.hpp"
 #include "streams/GPS_RAW_INT.hpp"
@@ -155,12 +158,24 @@
 #endif // !CONSTRAINED_FLASH
 
 // Skyboria messages
+#ifdef MAVLINK_MSG_ID_ECAN_INVERTER_REQUEST_CURRENT_ACTUAL
 #include "streams/skyboria/ECAN_INVERTER_REQUEST_CURRENT_ACTUAL.hpp"
+#endif
+#ifdef MAVLINK_MSG_ID_ECAN_INVERTER_REQUEST_CURRENT_200PC
 #include "streams/skyboria/ECAN_INVERTER_REQUEST_CURRENT_200PC.hpp"
+#endif
+#ifdef MAVLINK_MSG_ID_ECAN_INVERTER_REQUEST_CURRENT_DEVICE
 #include "streams/skyboria/ECAN_INVERTER_REQUEST_CURRENT_DEVICE.hpp"
+#endif
+#ifdef MAVLINK_MSG_ID_ECAN_INVERTER_REQUEST_SPEED_ACTUAL
 #include "streams/skyboria/ECAN_INVERTER_REQUEST_SPEED_ACTUAL.hpp"
+#endif
+#ifdef MAVLINK_MSG_ID_ECAN_INVERTER_REQUEST_SPEED_RPMMAX
 #include "streams/skyboria/ECAN_INVERTER_REQUEST_SPEED_RPMMAX.hpp"
+#endif
+#ifdef MAVLINK_MSG_ID_ECAN_INVERTER_CMD_TORQUE
 #include "streams/skyboria/ECAN_INVERTER_CMD_TORQUE.hpp"
+#endif
 
 // ensure PX4 rotation enum and MAV_SENSOR_ROTATION align
 static_assert(MAV_SENSOR_ROTATION_NONE == static_cast<MAV_SENSOR_ORIENTATION>(ROTATION_NONE),
@@ -518,6 +533,9 @@ static const StreamListItem streams_list[] = {
 #if defined(CURRENT_MODE_HPP)
 	create_stream_list_item<MavlinkStreamCurrentMode>(),
 #endif // CURRENT_MODE_HPP
+#if defined(GLOBAL_POSITION_HPP)
+	create_stream_list_item<MavlinkStreamGLobalPosition>(),
+#endif // GLOBAL_POSITION_HPP
 
 // Skyboria messages
 #if defined(ECAN_INVERTER_REQUEST_CURRENT_ACTUAL_HPP)
@@ -538,7 +556,6 @@ static const StreamListItem streams_list[] = {
 #if defined(ECAN_INVERTER_CMD_TORQUE_HPP)
 	create_stream_list_item<MavlinkStreamEcanInverterCmdTorque>(),
 #endif // ECAN_INVERTER_CMD_TORQUE_HPP
-
 };
 
 const char *get_stream_name(const uint16_t msg_id)

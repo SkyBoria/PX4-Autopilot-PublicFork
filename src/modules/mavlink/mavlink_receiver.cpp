@@ -3461,6 +3461,7 @@ MavlinkReceiver::run()
 
 			if (_mavlink.get_mode() != Mavlink::MAVLINK_MODE::MAVLINK_MODE_IRIDIUM) {
 				_parameters_manager.send();
+				_mavlink.set_sending_parameters(_parameters_manager.send_active());
 			}
 
 			if (_mavlink.ftp_enabled()) {
