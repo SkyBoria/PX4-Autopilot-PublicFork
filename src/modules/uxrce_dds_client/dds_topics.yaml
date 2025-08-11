@@ -5,6 +5,9 @@
 #####
 publications:
 
+  - topic: /fmu/out/engine_controller_inputs
+    type: px4_msgs::msg::engine_controller_inputs
+
   - topic: /fmu/out/register_ext_component_reply
     type: px4_msgs::msg::RegisterExtComponentReply
 

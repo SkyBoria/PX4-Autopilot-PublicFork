@@ -120,8 +120,24 @@
 #endif // !CONSTRAINED_FLASH
 
 // Skyboria messages
-#include <uORB/topics/ecan_inverter_state.h>
-#include <uORB/topics/battery_system_state.h>
+#if \
+	defined(MAVLINK_MSG_ID_ECAN_INVERTER_STATE_CURRENT_ACTUAL) || \
+	defined(MAVLINK_MSG_ID_ECAN_INVERTER_STATE_CURRENT_200PC) || \
+	defined(MAVLINK_MSG_ID_ECAN_INVERTER_STATE_CURRENT_DEVICE) || \
+	defined(MAVLINK_MSG_ID_ECAN_INVERTER_STATE_SPEED_ACTUAL) || \
+	defined(MAVLINK_MSG_ID_ECAN_INVERTER_STATE_SPEED_RPMMAX) || \
+	defined(MAVLINK_MSG_ID_ECAN_INVERTER_STATE_KERN_STATUS)
+	#include <uORB/topics/ecan_inverter_state.h>
+	#if !defined(SKYBORIA_MESSAGES)
+		#define SKYBORIA_MESSAGES
+	#endif
+#endif
+#if defined(MAVLINK_MSG_ID_BATTERY_SYSTEM_STATE)
+	#include <uORB/topics/battery_system_state.h>
+	#if !defined(SKYBORIA_MESSAGES)
+		#define SKYBORIA_MESSAGES
+	#endif
+#endif
 
 using namespace time_literals;
 
@@ -349,13 +365,14 @@ private:
 #endif // !CONSTRAINED_FLASH
 
 	// uORB Publications of SkyBoria messages
+	#if defined(SKYBORIA_MESSAGES)
 	uORB::Publication<battery_system_state_s> _battery_system_state_pub{ORB_ID(battery_system_state)};
 	uORB::Publication<ecan_inverter_state_s> _ecan_inverter_state_current_actual_pub{ORB_ID(ecan_inverter_state_current_actual)};
 	uORB::Publication<ecan_inverter_state_s> _ecan_inverter_state_current_200pc_pub{ORB_ID(ecan_inverter_state_current_200pc)};
 	uORB::Publication<ecan_inverter_state_s> _ecan_inverter_state_current_device_pub{ORB_ID(ecan_inverter_state_current_device)};
 	uORB::Publication<ecan_inverter_state_s> _ecan_inverter_state_speed_actual_pub{ORB_ID(ecan_inverter_state_speed_actual)};
 	uORB::Publication<ecan_inverter_state_s> _ecan_inverter_state_speed_rpmmax_pub{ORB_ID(ecan_inverter_state_speed_rpmmax)};
-
+	#endif
 
 	// ORB publications (multi)
 	uORB::PublicationMulti<distance_sensor_s>		_distance_sensor_pub{ORB_ID(distance_sensor)};

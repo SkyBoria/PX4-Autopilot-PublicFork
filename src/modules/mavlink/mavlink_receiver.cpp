@@ -325,29 +325,36 @@ MavlinkReceiver::handle_message(mavlink_message_t *msg)
 		break;
 
 // Skyboria messages
+	#if defined(MAVLINK_MSG_ID_ECAN_INVERTER_STATE_CURRENT_ACTUAL)
 	case MAVLINK_MSG_ID_ECAN_INVERTER_STATE_CURRENT_ACTUAL:
 		handle_message_ecan_inverter_state_current_actual(msg);
 		break;
-
+	#endif
+	#if defined(MAVLINK_MSG_ID_ECAN_INVERTER_STATE_CURRENT_200PC)
 	case MAVLINK_MSG_ID_ECAN_INVERTER_STATE_CURRENT_200PC:
 		handle_message_ecan_inverter_state_current_200pc(msg);
 		break;
-
+	#endif
+	#if defined(MAVLINK_MSG_ID_ECAN_INVERTER_STATE_CURRENT_DEVICE)
 	case MAVLINK_MSG_ID_ECAN_INVERTER_STATE_CURRENT_DEVICE:
 		handle_message_ecan_inverter_state_current_device(msg);
 		break;
-
+	#endif
+	#if defined(MAVLINK_MSG_ID_ECAN_INVERTER_STATE_SPEED_ACTUAL)
 	case MAVLINK_MSG_ID_ECAN_INVERTER_STATE_SPEED_ACTUAL:
 		handle_message_ecan_inverter_state_speed_actual(msg);
 		break;
-
+	#endif
+	#if defined(MAVLINK_MSG_ID_ECAN_INVERTER_STATE_SPEED_RPMMAX)
 	case MAVLINK_MSG_ID_ECAN_INVERTER_STATE_SPEED_RPMMAX:
 		handle_message_ecan_inverter_state_speed_rpmmax(msg);
 		break;
-
+	#endif
+	#if defined(MAVLINK_MSG_ID_BATTERY_SYSTEM_STATE)
 	case MAVLINK_MSG_ID_BATTERY_SYSTEM_STATE:
 		handle_message_battery_system_state(msg);
 		break;
+	#endif
 
 #if defined(MAVLINK_MSG_ID_SET_VELOCITY_LIMITS) // For now only defined if development.xml is used
 
@@ -3140,6 +3147,7 @@ void MavlinkReceiver::handle_message_open_drone_id_system(
 }
 
 // SkyBoria handler methods
+#if defined(MAVLINK_MSG_ID_ECAN_INVERTER_STATE_CURRENT_ACTUAL)
 void MavlinkReceiver::handle_message_ecan_inverter_state_current_actual(
 	mavlink_message_t *msg)
 {
@@ -3163,7 +3171,12 @@ void MavlinkReceiver::handle_message_ecan_inverter_state_current_actual(
 
 	_ecan_inverter_state_current_actual_pub.publish(uorb_msg_s);
 }
+#else
+void MavlinkReceiver::handle_message_ecan_inverter_state_current_actual(
+	mavlink_message_t *msg){}
+#endif
 
+#if defined(MAVLINK_MSG_ID_ECAN_INVERTER_STATE_CURRENT_200PC)
 void MavlinkReceiver::handle_message_ecan_inverter_state_current_200pc(
 	mavlink_message_t *msg)
 {
@@ -3187,7 +3200,12 @@ void MavlinkReceiver::handle_message_ecan_inverter_state_current_200pc(
 
 	_ecan_inverter_state_current_200pc_pub.publish(uorb_msg_s);
 }
+#else
+void MavlinkReceiver::handle_message_ecan_inverter_state_current_200pc(
+	mavlink_message_t *msg){}
+#endif
 
+#if defined(MAVLINK_MSG_ID_ECAN_INVERTER_STATE_CURRENT_DEVICE)
 void MavlinkReceiver::handle_message_ecan_inverter_state_current_device(
 	mavlink_message_t *msg)
 {
@@ -3211,7 +3229,12 @@ void MavlinkReceiver::handle_message_ecan_inverter_state_current_device(
 
 	_ecan_inverter_state_current_device_pub.publish(uorb_msg_s);
 }
+#else
+void MavlinkReceiver::handle_message_ecan_inverter_state_current_device(
+	mavlink_message_t *msg){}
+#endif
 
+#if defined(MAVLINK_MSG_ID_ECAN_INVERTER_STATE_SPEED_ACTUAL)
 void MavlinkReceiver::handle_message_ecan_inverter_state_speed_actual(
 	mavlink_message_t *msg)
 {
@@ -3235,7 +3258,12 @@ void MavlinkReceiver::handle_message_ecan_inverter_state_speed_actual(
 
 	_ecan_inverter_state_speed_actual_pub.publish(uorb_msg_s);
 }
+#else
+void MavlinkReceiver::handle_message_ecan_inverter_state_speed_actual(
+	mavlink_message_t *msg){}
+#endif
 
+#if defined(MAVLINK_MSG_ID_ECAN_INVERTER_STATE_SPEED_RPMMAX)
 void MavlinkReceiver::handle_message_ecan_inverter_state_speed_rpmmax(
 	mavlink_message_t *msg)
 {
@@ -3259,7 +3287,12 @@ void MavlinkReceiver::handle_message_ecan_inverter_state_speed_rpmmax(
 
 	_ecan_inverter_state_speed_rpmmax_pub.publish(uorb_msg_s);
 }
+#else
+void MavlinkReceiver::handle_message_ecan_inverter_state_speed_rpmmax(
+	mavlink_message_t *msg){}
+#endif
 
+#if defined(MAVLINK_MSG_ID_ECAN_BATTERY_SYSTEM_STATE)
 void MavlinkReceiver::handle_message_battery_system_state(
 	mavlink_message_t *msg)
 {
@@ -3281,6 +3314,10 @@ void MavlinkReceiver::handle_message_battery_system_state(
 
 	_battery_system_state_pub.publish(uorb_msg_s);
 }
+#else
+void MavlinkReceiver::handle_message_battery_system_state(
+	mavlink_message_t *msg){}
+#endif
 
 // End of message handlers
 void
